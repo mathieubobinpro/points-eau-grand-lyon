@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Points d'eau — Grand Lyon</title>
+<meta name="description" content="Localisez les fontaines et bornes fontaine d'eau potable de la Métropole de Lyon à proximité de vous." />
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%231d4ed8' d='M12 2C7 8 4 12.5 4 16a8 8 0 0 0 16 0c0-3.5-3-8-8-14z'/%3E%3C/svg%3E" />
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header class="app-header">
+  <div class="brand">
+    <span class="brand-logo" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M12 2C7 8 4 12.5 4 16a8 8 0 0 0 16 0c0-3.5-3-8-8-14z"/></svg>
+    </span>
+    <div class="brand-text">
+      <h1>Points d'eau</h1>
+      <p>Métropole de Lyon</p>
+    </div>
+  </div>
+  <button id="about-btn" class="btn-ghost" type="button">À propos</button>
+</header>
+
+<div id="status-bar" class="status-bar">
+  <span id="counter" class="counter">Chargement des points d'eau…</span>
+  <span id="geoloc-status" class="geoloc-status"></span>
+</div>
+
+<main>
+  <div id="map"></div>
+
+  <div id="loading-overlay" class="overlay">
+    <div class="overlay-card">
+      <span class="overlay-logo" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M12 2C7 8 4 12.5 4 16a8 8 0 0 0 16 0c0-3.5-3-8-8-14z"/></svg>
+      </span>
+      <p>Recherche des points d'eau à proximité…</p>
+    </div>
+  </div>
+
+  <div id="error-banner" class="overlay" hidden>
+    <div class="overlay-card error-card">
+      <p id="error-message">Impossible de charger les données.</p>
+      <button id="retry-btn" class="btn-primary" type="button">Réessayer</button>
+    </div>
+  </div>
+</main>
+
+<footer class="app-footer">
+  <p>
+    Données : <a href="https://data.grandlyon.com" target="_blank" rel="noopener">Métropole de Lyon — data.grandlyon.com</a>
+    · Licence <a href="https://opendatacommons.org/licenses/odbl/1-0/" target="_blank" rel="noopener">ODbL</a>
+    · Fond de carte © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">contributeurs OpenStreetMap</a>
+  </p>
+</footer>
+
+<dialog id="about-dialog">
+  <form method="dialog" class="about-content">
+    <h2>À propos</h2>
+    <p>
+      Cette application localise les fontaines et bornes fontaine d'eau potable de la
+      Métropole de Lyon à proximité de l'utilisateur.
+    </p>
+    <h3>Source des données</h3>
+    <p>
+      Jeu de données « Bornes fontaine de la Métropole de Lyon », compilation des données
+      Eau du Grand Lyon, des communes et d'OpenStreetMap, publié par la Métropole de Lyon
+      sur <a href="https://data.grandlyon.com" target="_blank" rel="noopener">data.grandlyon.com</a>
+      (API OGC API Features), avec un mode de secours vers le fichier GeoJSON publié sur
+      <a href="https://www.data.gouv.fr" target="_blank" rel="noopener">data.gouv.fr</a>.
+    </p>
+    <h3>Licence</h3>
+    <p>
+      Données distribuées sous licence <strong>ODbL</strong> (Open Database License).
+      Toute redistribution des données ou d'une base de données dérivée doit mentionner la
+      source et rester sous la même licence (partage à l'identique).
+    </p>
+    <h3>Fond de carte</h3>
+    <p>Tuiles © contributeurs OpenStreetMap, via Leaflet.js.</p>
+    <button class="btn-primary" type="submit">Fermer</button>
+  </form>
+</dialog>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
