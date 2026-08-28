@@ -67,25 +67,29 @@ serveur, pas de base de données locale persistante).
 Données diffusées sous licence **[ODbL](https://opendatacommons.org/licenses/odbl/1-0/)**
 (Open Database License). En cas de redistribution des données ou d'une base de
 données dérivée : mentionner la source (Métropole de Lyon / data.grandlyon.com)
-et republier sous la même licence (partage à l'identique). L'attribution est
-affichée dans le pied de page de l'app, sur les tuiles de la carte et dans la
-fenêtre « À propos ».
+et republier sous la même licence (partage à l'identique). L'attribution
+complète (source, licence, fond de carte) est affichée dans la fenêtre
+« À propos » ; elle n'est pas dupliquée en permanence à l'écran par souci
+d'épuration de l'interface.
 
 ## Fonctionnalités
 
 - Géolocalisation du navigateur au chargement, avec centrage automatique sur
   Lyon centre-ville si l'utilisateur refuse ou si la géolocalisation échoue.
+- Bouton de localisation flottant sur la carte pour recentrer manuellement sur
+  sa position à tout moment.
 - Un marker (goutte d'eau) par point du jeu de données.
 - Clustering dynamique par niveau de zoom (Leaflet.markercluster) : les points
-  se regroupent en clusters (avec badge du nombre de points) en dézoomant, et
-  se dégroupent progressivement jusqu'à afficher chaque point individuellement
-  au zoom rue.
+  se regroupent en clusters affichant un badge numéroté (le nombre de points
+  regroupés) en dézoomant, et se dégroupent progressivement jusqu'à afficher
+  chaque point individuellement, en goutte d'eau, au zoom rue.
 - Popup au clic sur un point, avec les informations disponibles dans le GeoJSON
   (identifiant, commune, code INSEE, source / gestionnaire, année de pose —
   seuls les champs réellement présents sont affichés).
 - Indicateur de chargement pendant le fetch, message d'erreur avec bouton
   « Réessayer » si l'API ne répond pas.
-- Compteur du nombre total de points chargés, affiché dans la barre de statut.
+- Le nombre total de points chargés est tracé dans la console navigateur (utile
+  pour vérifier que le fetch a bien fonctionné), sans encombrer l'interface.
 - Charte graphique bleue, logo et marqueurs en forme de goutte d'eau.
 
 ## Lancer le projet en local

@@ -28,13 +28,14 @@
   <button id="about-btn" class="btn-ghost" type="button">À propos</button>
 </header>
 
-<div id="status-bar" class="status-bar">
-  <span id="counter" class="counter">Chargement des points d'eau…</span>
-  <span id="geoloc-status" class="geoloc-status"></span>
-</div>
-
 <main>
   <div id="map"></div>
+
+  <button id="locate-btn" class="locate-btn" type="button" title="Me localiser" aria-label="Me localiser">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 8a4 4 0 100 8 4 4 0 000-8zm8.94 3A9 9 0 0013 3.06V1h-2v2.06A9 9 0 003.06 11H1v2h2.06A9 9 0 0011 20.94V23h2v-2.06A9 9 0 0020.94 13H23v-2h-2.06zM12 19a7 7 0 110-14 7 7 0 010 14z"/>
+    </svg>
+  </button>
 
   <div id="loading-overlay" class="overlay">
     <div class="overlay-card">
@@ -52,14 +53,6 @@
     </div>
   </div>
 </main>
-
-<footer class="app-footer">
-  <p>
-    Données : <a href="https://data.grandlyon.com" target="_blank" rel="noopener">Métropole de Lyon — data.grandlyon.com</a>
-    · Licence <a href="https://opendatacommons.org/licenses/odbl/1-0/" target="_blank" rel="noopener">ODbL</a>
-    · Fond de carte © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">contributeurs OpenStreetMap</a>
-  </p>
-</footer>
 
 <dialog id="about-dialog">
   <form method="dialog" class="about-content">
