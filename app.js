@@ -37,14 +37,13 @@ function dropSvg() {
 
 const els = {
   map: document.getElementById("map"),
-  counter: document.getElementById("counter"),
-  geolocStatus: document.getElementById("geoloc-status"),
   loadingOverlay: document.getElementById("loading-overlay"),
   errorBanner: document.getElementById("error-banner"),
   errorMessage: document.getElementById("error-message"),
   retryBtn: document.getElementById("retry-btn"),
   aboutBtn: document.getElementById("about-btn"),
   aboutDialog: document.getElementById("about-dialog"),
+  locateBtn: document.getElementById("locate-btn"),
 };
 
 const waterIcon = L.divIcon({
@@ -74,9 +73,7 @@ function createClusterIcon(cluster) {
   const sizeClass = clusterSizeClass(count);
   const px = sizeClass === "large" ? 52 : sizeClass === "medium" ? 42 : 34;
   const html =
-    '<div class="cluster-drop cluster-' + sizeClass + '" style="width:' + px + "px;height:" + px + 'px">' +
-    dropSvg() +
-    '<span class="cluster-count">' + count + "</span></div>";
+    '<div class="cluster-badge cluster-' + sizeClass + '">' + count + "</div>";
   return L.divIcon({
     html: html,
     className: "cluster-icon-wrapper",
@@ -84,13 +81,10 @@ function createClusterIcon(cluster) {
   });
 }
 
-const map = L.map(els.map, { zoomControl: true }).setView(LYON_CENTER, DEFAULT_ZOOM);
+const map = L.map(els.map, { zoomControl: true, attributionControl: false }).setView(LYON_CENTER, DEFAULT_ZOOM);
 
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
   maxZoom: 19,
-  attribution:
-    '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors' +
-    ' | Points d\'eau : <a href="https://data.grandlyon.com" target="_blank" rel="noopener">Métropole de Lyon</a> (ODbL)',
 }).addTo(map);
 
 const clusterGroup = L.markerClusterGroup({
@@ -167,7 +161,7 @@ function renderWaterPoints(geojson) {
 
   clusterGroup.addLayer(layer);
 
-  els.counter.textContent = features.length + " point" + (features.length > 1 ? "s" : "") + " d'eau chargé" + (features.length > 1 ? "s" : "");
+  console.log(features.length + " points d'eau chargés");
 }
 
 async function fetchJson(url) {
@@ -208,7 +202,6 @@ async function loadWaterPoints() {
 async function initData() {
   els.loadingOverlay.hidden = false;
   els.errorBanner.hidden = true;
-  els.counter.textContent = "Chargement des points d'eau…";
 
   try {
     const geojson = await loadWaterPoints();
@@ -218,31 +211,39 @@ async function initData() {
     els.loadingOverlay.hidden = true;
     els.errorMessage.textContent = error.message || "Erreur inconnue lors du chargement des données.";
     els.errorBanner.hidden = false;
-    els.counter.textContent = "Échec du chargement";
   }
 }
 
+let userMarker = null;
+
 function locateUser() {
   if (!("geolocation" in navigator)) {
-    els.geolocStatus.textContent = "Géolocalisation non supportée — centré sur Lyon.";
+    console.warn("Géolocalisation non supportée par ce navigateur.");
     map.setView(LYON_CENTER, DEFAULT_ZOOM);
     return;
   }
 
-  els.geolocStatus.textContent = "Localisation en cours…";
+  els.locateBtn.classList.remove("is-error");
+  els.locateBtn.classList.add("is-locating");
 
   navigator.geolocation.getCurrentPosition(
     (position) => {
       const { latitude, longitude } = position.coords;
       map.setView([latitude, longitude], 15);
-      L.marker([latitude, longitude], { icon: userIcon, zIndexOffset: 1000 })
-        .addTo(map)
-        .bindPopup("Vous êtes ici");
-      els.geolocStatus.textContent = "";
+      if (userMarker) {
+        userMarker.setLatLng([latitude, longitude]);
+      } else {
+        userMarker = L.marker([latitude, longitude], { icon: userIcon, zIndexOffset: 1000 })
+          .addTo(map)
+          .bindPopup("Vous êtes ici");
+      }
+      els.locateBtn.classList.remove("is-locating");
     },
     (error) => {
       console.warn("Géolocalisation refusée ou indisponible :", error);
-      els.geolocStatus.textContent = "Position non disponible — centré sur Lyon.";
+      els.locateBtn.classList.remove("is-locating");
+      els.locateBtn.classList.add("is-error");
+      setTimeout(() => els.locateBtn.classList.remove("is-error"), 2000);
       map.setView(LYON_CENTER, DEFAULT_ZOOM);
     },
     { enableHighAccuracy: true, timeout: 8000, maximumAge: 60000 }
@@ -251,6 +252,7 @@ function locateUser() {
 
 els.retryBtn.addEventListener("click", initData);
 els.aboutBtn.addEventListener("click", () => els.aboutDialog.showModal());
+els.locateBtn.addEventListener("click", locateUser);
 
 locateUser();
 initData();

@@ -109,27 +109,6 @@ body {
   background: var(--blue-700);
 }
 
-/* Status bar */
-.status-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  padding: 0.4rem 1.25rem;
-  background: var(--blue-100);
-  color: var(--blue-900);
-  font-size: 0.82rem;
-  z-index: 15;
-}
-
-.counter {
-  font-weight: 600;
-}
-
-.geoloc-status {
-  color: var(--text-muted);
-}
-
 /* Map */
 main {
   position: relative;
@@ -151,7 +130,7 @@ main {
   justify-content: center;
   background: rgba(239, 246, 255, 0.85);
   backdrop-filter: blur(2px);
-  z-index: 30;
+  z-index: 2000;
 }
 
 .overlay[hidden] {
@@ -197,17 +176,47 @@ main {
   margin: 0 0 1rem;
 }
 
-/* Footer */
-.app-footer {
-  padding: 0.5rem 1.25rem;
-  background: var(--blue-900);
-  color: var(--blue-100);
-  font-size: 0.72rem;
-  text-align: center;
+/* Locate button */
+.locate-btn {
+  position: absolute;
+  right: 12px;
+  bottom: 24px;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: none;
+  background: var(--white);
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  z-index: 1000;
+  padding: 0;
+  transition: background 0.15s ease, transform 0.15s ease;
 }
 
-.app-footer a {
-  color: var(--white);
+.locate-btn:hover {
+  background: var(--blue-50);
+}
+
+.locate-btn svg {
+  width: 22px;
+  height: 22px;
+  fill: var(--blue-600);
+}
+
+.locate-btn.is-locating svg {
+  animation: spin 1s linear infinite;
+}
+
+.locate-btn.is-error svg {
+  fill: var(--danger);
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 /* About dialog */
@@ -276,36 +285,23 @@ main {
   border: none !important;
 }
 
-.cluster-drop {
-  position: relative;
+.cluster-badge {
   display: flex;
   align-items: center;
   justify-content: center;
-  filter: drop-shadow(0 2px 4px rgba(12, 45, 99, 0.45));
-}
-
-.cluster-drop svg {
   width: 100%;
   height: 100%;
-  fill: var(--blue-600);
-  stroke: var(--white);
-  stroke-width: 0.6;
-}
-
-.cluster-small svg { fill: var(--blue-400); }
-.cluster-medium svg { fill: var(--blue-600); }
-.cluster-large svg { fill: var(--blue-800); }
-
-.cluster-count {
-  position: absolute;
-  top: 26%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 2px solid var(--white);
   color: var(--white);
   font-weight: 700;
-  font-size: 0.72rem;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  font-family: inherit;
+  box-shadow: 0 2px 6px rgba(12, 45, 99, 0.45);
 }
+
+.cluster-small { background: var(--blue-400); font-size: 0.72rem; }
+.cluster-medium { background: var(--blue-600); font-size: 0.82rem; }
+.cluster-large { background: var(--blue-800); font-size: 0.92rem; }
 
 /* Popups */
 .leaflet-popup-content-wrapper {
@@ -337,5 +333,4 @@ main {
 
 @media (max-width: 560px) {
   .brand-text p { display: none; }
-  .status-bar { font-size: 0.75rem; }
 }
