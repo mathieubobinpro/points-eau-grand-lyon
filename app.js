@@ -55,11 +55,11 @@ const waterIcon = L.divIcon({
 });
 
 const userIcon = L.divIcon({
-  className: "user-marker-icon",
-  html: dropSvg(),
-  iconSize: [26, 26],
-  iconAnchor: [13, 25],
-  popupAnchor: [0, -22],
+  className: "user-location-icon",
+  html: '<span class="user-location-dot"></span>',
+  iconSize: [16, 16],
+  iconAnchor: [8, 8],
+  popupAnchor: [0, -10],
 });
 
 function clusterSizeClass(count) {
