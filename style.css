@@ -40,7 +40,7 @@ body {
   justify-content: space-between;
   gap: 1rem;
   padding: 0.75rem 1.25rem;
-  background: linear-gradient(135deg, var(--blue-800), var(--blue-600));
+  background: var(--blue-700);
   color: var(--white);
   box-shadow: var(--shadow);
   z-index: 20;
